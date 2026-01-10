@@ -1,99 +1,203 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🧠 Momentum — Intelligent Habit Building Platform
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Momentum is an **intelligent habit-building backend** built with **NestJS**.  
+It helps users build real consistency — not just tick checkboxes.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Unlike regular habit or todo apps, Momentum:
 
-## Description
+- Understands user behavior
+- Tracks streaks intelligently
+- Detects when consistency is dropping
+- Adjusts reminders dynamically
+- Provides meaningful analytics
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Momentum isn’t just a tracker.  
+It’s a **coach**.
 
-## Project setup
+---
 
-```bash
-$ pnpm install
-```
+## ⭐ Core Value Proposition
 
-## Compile and run the project
+✔ Helps users stay consistent  
+✔ Detects missed habits intelligently  
+✔ Encourages recovery instead of punishment  
+✔ Learns user behavior over time
 
-```bash
-# development
-$ pnpm run start
+---
 
-# watch mode
-$ pnpm run start:dev
+## 🎯 Key Features
 
-# production mode
-$ pnpm run start:prod
-```
+### 🧱 Core Features
 
-## Run tests
+- Secure user management
+- Habit creation with:
+  - Daily frequency
+  - Interval frequency
+  - Custom day scheduling
+- Habit completion logging
+- Advanced streak engine:
+  - Maintains current streak
+  - Tracks longest streak
+  - Resets + recovery logic
 
-```bash
-# unit tests
-$ pnpm run test
+---
 
-# e2e tests
-$ pnpm run test:e2e
+### 🤖 Intelligence Layer
 
-# test coverage
-$ pnpm run test:cov
-```
+- Daily automated evaluation
+- Smart reminder escalation:
+  - Missed 1 day → gentle nudge
+  - Missed 2 days → stronger reminder
+  - Missed 3+ days → motivational + streak strategy
+- Behavior-aware decision rules
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 📊 Analytics
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- Success rate
+- Daily completion summary
+- Strongest habit
+- Weakest habit
+- Trend performance overview
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 🔔 Notifications (Optional Stretch)
 
-## Resources
+- Email
+- Push
+- WhatsApp
+- Background queue execution
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# 🏗️ System Architecture
 
-## Support
+### High-Level System Architecture
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+> 📌 **Diagram Placeholder — High-Level Architecture**
+>
+> _(Insert Architecture Diagram Here)_
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🧩 Internal NestJS Module Architecture
 
-## License
+> 📌 **Diagram Placeholder — Internal Architecture**
+>
+> _(Insert Module Architecture Diagram Here)_
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# momentum
+---
+
+## 🔄 Core System Flows
+
+### 1️⃣ Habit Completion Flow
+
+> 📌 **Diagram Placeholder — Habit Completion Sequence**
+>
+> _(Insert Sequence Diagram Here)_
+
+---
+
+### 2️⃣ Daily Intelligence / Smart Reminder Flow
+
+> 📌 **Diagram Placeholder — Cron Intelligence Sequence**
+>
+> _(Insert Sequence Diagram Here)_
+
+---
+
+# 🗄️ Database ER Diagram
+
+> 📌 **Diagram Placeholder — ER Diagram**
+>
+> _(Insert ER Diagram Here)_
+
+---
+
+# 🛠️ Tech Stack
+
+**Backend**
+
+- NestJS
+- TypeScript
+
+**Database**
+
+- PostgreSQL
+
+**Background Processing**
+
+- Redis + Bull Queue
+
+**Automation**
+
+- Cron Jobs
+
+**Auth**
+
+- Cookie session
+
+**Optional Integrations**
+
+- Firebase Push
+- Nodemailer
+- WhatsApp Cloud API
+
+---
+
+# 📌 API Highlights
+
+### 👤 Users
+
+POST /users/register
+POST /users/login
+
+---
+
+### 📌 Habits
+
+POST /habits
+GET /habits
+PATCH /habits/:id
+DELETE /habits/:id
+POST /habits/:id/complete
+
+---
+
+### 📊 Analytics
+
+GET /analytics/summary
+
+---
+
+# 🚀 Future Enhancements
+
+- AI recommendation engine
+  - Suggests best activity time based on history
+- Leaderboard / community mode
+- Habit buddy system
+- Premium subscription tier
+- Offline-capable sync support
+- Mobile-first companion app
+
+---
+
+# 🏁 Why Momentum Exists
+
+Most habit apps spam reminders blindly.  
+Momentum focuses on:
+
+- **Behavior awareness**
+- **Smart coaching**
+- **Real accountability**
+- **Long-term consistency**
+
+Momentum helps users build meaningful habits — and keep them.
+
+---
+
+## 👨‍💻 Author
+
+Momentum — Designed & Engineered with intention.
