@@ -1,0 +1,30 @@
+# signup
+POST http://localhost:3000/users/auth/signup
+Content-Type: application/json
+
+{
+    "email":"test@example.com",
+    "password":"password",
+    "firstName":"John",
+    "lastName":"Doe"
+}
+
+###
+
+# signin
+POST http://localhost:3000/users/auth/signin
+Content-Type: application/json
+
+{
+    "email":"test@example.com",
+    "password":"password"
+}
+
+###
+
+# find all users
+GET http://localhost:3000/users
+
+###
+
+
