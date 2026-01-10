@@ -1,7 +1,15 @@
 import { DrizzleService } from 'src/database/drizzle.service';
 import { UsersService } from './users.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
+interface SessionData {
+  userId?: number | string;
+}
 @Injectable()
 export class AuthService {
   constructor(
@@ -9,22 +17,43 @@ export class AuthService {
     private readonly drizzle: DrizzleService,
   ) {}
 
-  async signup(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-  ) {
-    const user = await this.usersService.findOneByEmail(email);
-    if (user.length > 1) {
+  async signup(email: string, password: string) {
+    // Check if user already exists
+    const existingUser = await this.usersService.findOneByEmail(email);
+    if (existingUser.length >= 1) {
       throw new BadRequestException('User already exists');
     }
-    console.log(user, email, password, firstName, lastName);
+
+    // Hash the password with bcrypt using 10 salt rounds
+    const hashedPassword: string = await bcrypt.hash(password, 10);
+
+    // Create the user with the hashed password
+    const newUser = await this.usersService.create(email, hashedPassword);
+
+    return newUser;
   }
 
-  signin(email: string, password: string) {
-    console.log(email, password);
+  async signin(email: string, password: string) {
+    // Find the user by email
+    const user = await this.usersService.findOneByEmail(email);
+
+    if (!user[0]) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user[0].password);
+
+    if (!isPasswordValid) {
+      throw new BadRequestException('Invalid email or password');
+    }
+
+    // TODO: serialize the response to remove the password
+
+    return user[0];
   }
 
-  signout() {}
+  signout(session: SessionData) {
+    delete session.userId;
+  }
 }
