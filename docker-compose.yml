@@ -1,0 +1,34 @@
+services:
+  postgres:
+    container_name: momentum-postgres
+    image: postgres:17.2
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - docker.env
+    networks:
+      - postgres
+
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: momentum-pgadmin
+    image: dpage/pgadmin4:8.6
+    ports:
+      - '8080:80'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    env_file:
+      - docker.env
+    networks:
+      - postgres
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  postgres:
+    driver: bridge
