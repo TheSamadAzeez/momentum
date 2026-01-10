@@ -4,9 +4,7 @@ Content-Type: application/json
 
 {
     "email":"test@example.com",
-    "password":"password",
-    "firstName":"John",
-    "lastName":"Doe"
+    "password":"password"
 }
 
 ###
@@ -22,9 +20,7 @@ Content-Type: application/json
 
 ###
 
-# find all users
-GET http://localhost:3000/users
-
-###
+# signout
+POST http://localhost:3000/users/auth/signout
 
 
