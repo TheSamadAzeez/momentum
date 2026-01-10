@@ -7,10 +7,12 @@ import { usersTable } from 'src/database/schemas/users';
 export class UsersService {
   constructor(private readonly drizzleService: DrizzleService) {}
 
-  create(email: string, password: string, firstName: string, lastName: string) {
-    return this.drizzleService.db
+  async create(email: string, password: string) {
+    const result = await this.drizzleService.db
       .insert(usersTable)
-      .values({ email, password, firstName, lastName });
+      .values({ email, password })
+      .returning();
+    return result[0];
   }
 
   findOne(id: string) {
