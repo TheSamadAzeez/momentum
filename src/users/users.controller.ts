@@ -1,14 +1,23 @@
-import { Controller, Post, Body, Session } from '@nestjs/common';
+import { Body, Controller, Get, Post, Session } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { UsersService } from './users.service';
 
 interface SessionData {
-  userId?: number | string;
+  userId?: string;
 }
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService,
+  ) {}
+
+  @Get()
+  findUser(@Session() session: SessionData) {
+    return this.usersService.findOneById(session.userId as string);
+  }
 
   @Post('auth/signup')
   async signup(@Body() body: CreateUserDto, @Session() session: SessionData) {
