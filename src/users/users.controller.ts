@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Post, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 interface SessionData {
   userId?: string;
@@ -15,8 +23,9 @@ export class UsersController {
   ) {}
 
   @Get()
-  findUser(@Session() session: SessionData) {
-    return this.usersService.findOneById(session.userId as string);
+  @UseGuards(AuthGuard)
+  async findUser(@Session() session: SessionData) {
+    return await this.usersService.findOneById(session.userId as string);
   }
 
   @Post('auth/signup')
