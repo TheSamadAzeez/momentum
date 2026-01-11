@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { DrizzleService } from 'src/database/drizzle.service';
 import { usersTable } from 'src/database/schemas/users';
@@ -15,10 +15,14 @@ export class UsersService {
     return result[0];
   }
 
-  findOneById(id: string) {
-    return this.drizzleService.db.query.usersTable.findFirst({
+  async findOneById(id: string) {
+    const user = await this.drizzleService.db.query.usersTable.findFirst({
       where: eq(usersTable.id, id),
     });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   findOneByEmail(email: string) {
