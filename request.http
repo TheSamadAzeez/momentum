@@ -1,5 +1,5 @@
 # signup
-POST http://localhost:3000/users/auth/signup
+POST http://localhost:3000/user/auth/signup
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 ###
 
 # signin
-POST http://localhost:3000/users/auth/signin
+POST http://localhost:3000/user/auth/signin
 Content-Type: application/json
 
 {
@@ -21,6 +21,9 @@ Content-Type: application/json
 ###
 
 # signout
-POST http://localhost:3000/users/auth/signout
+POST http://localhost:3000/user/auth/signout
 
+###
 
+# find user
+GET http://localhost:3000/user
