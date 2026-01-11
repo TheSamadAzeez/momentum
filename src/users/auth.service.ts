@@ -2,8 +2,8 @@ import { DrizzleService } from 'src/database/drizzle.service';
 import { UsersService } from './users.service';
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
@@ -20,8 +20,8 @@ export class AuthService {
   async signup(email: string, password: string) {
     // Check if user already exists
     const existingUser = await this.usersService.findOneByEmail(email);
-    if (existingUser.length >= 1) {
-      throw new BadRequestException('User already exists');
+    if (existingUser) {
+      throw new ConflictException('User already exists');
     }
 
     // Hash the password with bcrypt using 10 salt rounds
@@ -37,12 +37,12 @@ export class AuthService {
     // Find the user by email
     const user = await this.usersService.findOneByEmail(email);
 
-    if (!user[0]) {
-      throw new NotFoundException('User not found');
+    if (!user) {
+      throw new BadRequestException('Invalid email or password');
     }
 
     // Compare the provided password with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(password, user[0].password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new BadRequestException('Invalid email or password');
@@ -50,7 +50,7 @@ export class AuthService {
 
     // TODO: serialize the response to remove the password
 
-    return user[0];
+    return user;
   }
 
   signout(session: SessionData) {
