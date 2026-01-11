@@ -1,0 +1,29 @@
+# signup
+POST http://localhost:3000/user/auth/signup
+Content-Type: application/json
+
+{
+    "email":"test@example.com",
+    "password":"password"
+}
+
+###
+
+# signin
+POST http://localhost:3000/user/auth/signin
+Content-Type: application/json
+
+{
+    "email":"test@example.com",
+    "password":"password"
+}
+
+###
+
+# signout
+POST http://localhost:3000/user/auth/signout
+
+###
+
+# find user
+GET http://localhost:3000/user

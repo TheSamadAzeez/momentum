@@ -5,7 +5,7 @@ import 'dotenv/config';
 const configService = new ConfigService();
 
 export default defineConfig({
-  schema: './src/database/database-schema.ts',
+  schema: './src/database/schemas/*',
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
@@ -14,5 +14,6 @@ export default defineConfig({
     user: configService.get('POSTGRES_USER')!,
     password: configService.get('POSTGRES_PASSWORD')!,
     database: configService.get('POSTGRES_DB')!,
+    ssl: false,
   },
 });

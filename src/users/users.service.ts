@@ -1,23 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { DrizzleService } from 'src/database/drizzle.service';
+import { usersTable } from 'src/database/schemas/users';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly drizzleService: DrizzleService) {}
 
-  findOne(id: number) {
-    console.log(`user id: ${id}`);
+  async create(email: string, password: string) {
+    const result = await this.drizzleService.db
+      .insert(usersTable)
+      .values({ email, password })
+      .returning();
+    return result[0];
+  }
+
+  async findOneById(id: string) {
+    const user = await this.drizzleService.db.query.usersTable.findFirst({
+      where: eq(usersTable.id, id),
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   findOneByEmail(email: string) {
-    console.log(`user email: ${email}`);
+    return this.drizzleService.db.query.usersTable.findFirst({
+      where: eq(usersTable.email, email),
+    });
   }
 
   findAll() {
-    console.log('all users');
+    return this.drizzleService.db.select().from(usersTable);
   }
 
-  delete(id: number) {
-    console.log(`deleted user with id: ${id}`);
+  delete(id: string) {
+    return this.drizzleService.db
+      .delete(usersTable)
+      .where(eq(usersTable.id, id));
   }
 }
