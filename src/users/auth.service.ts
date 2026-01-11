@@ -48,8 +48,6 @@ export class AuthService {
       throw new BadRequestException('Invalid email or password');
     }
 
-    // TODO: serialize the response to remove the password
-
     return user;
   }
 
