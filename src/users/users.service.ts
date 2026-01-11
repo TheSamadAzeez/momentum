@@ -15,18 +15,16 @@ export class UsersService {
     return result[0];
   }
 
-  findOne(id: string) {
-    return this.drizzleService.db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.id, id));
+  findOneById(id: string) {
+    return this.drizzleService.db.query.usersTable.findFirst({
+      where: eq(usersTable.id, id),
+    });
   }
 
   findOneByEmail(email: string) {
-    return this.drizzleService.db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.email, email));
+    return this.drizzleService.db.query.usersTable.findFirst({
+      where: eq(usersTable.email, email),
+    });
   }
 
   findAll() {
