@@ -35,10 +35,11 @@ POST http://localhost:3000/habits
 Content-Type: application/json
 
 {
-    "title": "Habit 1",
-    "description": "Description 1",
-    "frequencyType": "daily",
-    "reminderTimes": ["08:00", "12:00", "18:00"],
+    "title": "Habit 2",
+    "description": "Description 2",
+    "frequencyType": "custom",
+    "customDays": ["monday", "wednesday", "friday"],
+    "reminderTimes": ["08:00", "12:00"],
     "isActive": true
 }
 
@@ -69,4 +70,17 @@ Content-Type: application/json
 }
 
 ###
+
+# delete habit
 DELETE http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b
+
+###
+
+# complete habit
+POST http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b/completed
+
+###
+
+# get habit logs
+GET http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b/logs
+
