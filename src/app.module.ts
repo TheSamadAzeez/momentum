@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import databaseConfig from './database/database.config';
 import { UserSessionMiddleware } from './middleware/user-session.middleware';
 import { HabitsModule } from './habits/habits.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { HabitsModule } from './habits/habits.module';
     }),
     UsersModule,
     HabitsModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
