@@ -34,29 +34,49 @@ export class HabitsController {
     return await this.habitsService.getAllHabits(session.userId);
   }
 
-  @Get(':id')
+  @Get(':habitId')
   async getHabitById(
-    @Param('id') id: string,
+    @Param('habitId') habitId: string,
     @Session() session: { userId: string },
   ) {
-    return await this.habitsService.getHabitById(id, session.userId);
+    return await this.habitsService.getHabitById(habitId, session.userId);
   }
 
-  @Patch(':id')
+  @Patch(':habitId')
   @UsePipes(new TransformHabitFrequencyPipe())
   async updateHabit(
-    @Param('id') id: string,
+    @Param('habitId') habitId: string,
     @Session() session: { userId: string },
     @Body() habitData: createHabitDTO,
   ) {
-    return await this.habitsService.updateHabit(id, session.userId, habitData);
+    return await this.habitsService.updateHabit(
+      habitId,
+      session.userId,
+      habitData,
+    );
   }
 
-  @Delete(':id')
+  @Delete(':habitId')
   async deleteHabit(
-    @Param('id') id: string,
+    @Param('habitId') habitId: string,
     @Session() session: { userId: string },
   ) {
-    return await this.habitsService.deleteHabit(id, session.userId);
+    return await this.habitsService.deleteHabit(habitId, session.userId);
+  }
+
+  @Post(':habitId/completed')
+  async completeHabit(
+    @Param('habitId') habitId: string,
+    @Session() session: { userId: string },
+  ) {
+    return await this.habitsService.completeHabit(habitId, session.userId);
+  }
+
+  @Get(':habitId/logs')
+  async getHabitLogs(
+    @Param('habitId') habitId: string,
+    @Session() session: { userId: string },
+  ) {
+    return await this.habitsService.getHabitLogs(habitId, session.userId);
   }
 }
