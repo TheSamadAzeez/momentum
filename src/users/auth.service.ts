@@ -52,6 +52,9 @@ export class AuthService {
   }
 
   signout(session: SessionData) {
+    if (!session.userId) {
+      throw new BadRequestException('User not found');
+    }
     delete session.userId;
   }
 }
