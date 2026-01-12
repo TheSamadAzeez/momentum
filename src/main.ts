@@ -3,7 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import cookieSession from 'cookie-session';
 import { UserDto } from './users/dtos/user.dto';
-import { SerializeInterceptor } from './users/interceptors/serialize.interceptor';
+import { SerializeInterceptor } from './interceptors/serialize.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
