@@ -27,3 +27,46 @@ POST http://localhost:3000/user/auth/signout
 
 # find user
 GET http://localhost:3000/user
+
+###
+
+# create habit
+POST http://localhost:3000/habits
+Content-Type: application/json
+
+{
+    "title": "Habit 1",
+    "description": "Description 1",
+    "frequencyType": "daily",
+    "reminderTimes": ["08:00", "12:00", "18:00"],
+    "isActive": true
+}
+
+###
+
+# get all habits
+GET http://localhost:3000/habits
+
+###
+
+# get habit by id
+GET http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b
+
+###
+
+# update habit
+PATCH http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b
+Content-Type: application/json
+
+{
+    "title": "Habit 1",
+    "description": "Description 1",
+    "frequencyType": "daily",
+    "intervalDays": 4,
+    "customDays": ["monday", "wednesday", "friday"],
+    "reminderTimes": ["08:00", "12:00", "18:00"],
+    "isActive": true
+}
+
+###
+DELETE http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b
