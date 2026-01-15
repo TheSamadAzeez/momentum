@@ -88,3 +88,9 @@ GET http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b/logs
 
 # get analytics summary
 GET http://localhost:3000/analytics/summary
+
+###
+
+# get streak
+GET http://localhost:3000/streak
+
