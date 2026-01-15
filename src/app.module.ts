@@ -8,6 +8,7 @@ import databaseConfig from './database/database.config';
 import { UserSessionMiddleware } from './middleware/user-session.middleware';
 import { HabitsModule } from './habits/habits.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { StreakModule } from './streak/streak.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
     UsersModule,
     HabitsModule,
     AnalyticsModule,
+    StreakModule,
   ],
   controllers: [AppController],
   providers: [AppService],
