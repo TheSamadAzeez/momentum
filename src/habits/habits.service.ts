@@ -4,10 +4,14 @@ import { and, eq } from 'drizzle-orm';
 import { habitsTable } from 'src/database/schemas/habits';
 import { habitLogTable } from 'src/database/schemas/habit-log';
 import { createHabitDTO } from './dtos/create-habit.dto';
+import { StreakService } from 'src/streak/streak.service';
 
 @Injectable()
 export class HabitsService {
-  constructor(private readonly drizzleService: DrizzleService) {}
+  constructor(
+    private readonly drizzleService: DrizzleService,
+    private readonly streakService: StreakService,
+  ) {}
 
   async createHabit(userId: string, habitData: createHabitDTO) {
     await this.drizzleService.db.insert(habitsTable).values({
@@ -71,7 +75,7 @@ export class HabitsService {
       completed: true,
     });
 
-    // TODO: Update streak and Update longest streak if needed
+    await this.streakService.updateStreak(userId, habitId);
     return { message: 'Habit marked as completed' };
   }
 
