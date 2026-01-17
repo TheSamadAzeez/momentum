@@ -19,14 +19,16 @@ export class HabitsService {
       userId,
     });
 
-    return { message: 'Habit created successfully' };
+    return { status: 'success', message: 'Habit created successfully' };
   }
 
   async getAllHabits(userId: string) {
-    return await this.drizzleService.db
+    const result = await this.drizzleService.db
       .select()
       .from(habitsTable)
       .where(eq(habitsTable.userId, userId));
+
+    return { status: 'success', message: 'Habits found', data: result };
   }
 
   async getHabitById(habitId: string, userId: string) {
@@ -38,7 +40,7 @@ export class HabitsService {
       throw new NotFoundException('Habit not found');
     }
 
-    return habit;
+    return { status: 'success', message: 'Habit found', data: habit };
   }
 
   async updateHabit(
@@ -51,15 +53,19 @@ export class HabitsService {
       .set(habitData)
       .where(and(eq(habitsTable.id, habitId), eq(habitsTable.userId, userId)));
 
-    return { message: 'Habit updated successfully' };
+    return { status: 'success', message: 'Habit updated successfully' };
   }
 
   async deleteHabit(habitId: string, userId: string) {
+    const habit = await this.getHabitById(habitId, userId);
+    if (!habit) {
+      throw new NotFoundException('Habit not found');
+    }
     await this.drizzleService.db
       .delete(habitsTable)
       .where(and(eq(habitsTable.id, habitId), eq(habitsTable.userId, userId)));
 
-    return { message: 'Habit deleted successfully' };
+    return { status: 'success', message: 'Habit deleted successfully' };
   }
 
   async completeHabit(habitId: string, userId: string) {
@@ -71,12 +77,12 @@ export class HabitsService {
     }
 
     await this.drizzleService.db.insert(habitLogTable).values({
-      habitId: habit.id,
+      habitId: habit.data.id,
       completed: true,
     });
 
     await this.streakService.updateStreak(userId, habitId);
-    return { message: 'Habit marked as completed' };
+    return { status: 'success', message: 'Habit marked as completed' };
   }
 
   async getHabitLogs(habitId: string, userId: string) {
@@ -86,9 +92,11 @@ export class HabitsService {
       throw new NotFoundException('Habit not found');
     }
 
-    return await this.drizzleService.db
+    const result = await this.drizzleService.db
       .select()
       .from(habitLogTable)
       .where(eq(habitLogTable.habitId, habitId));
+
+    return { status: 'success', message: 'Habit logs found', data: result };
   }
 }
