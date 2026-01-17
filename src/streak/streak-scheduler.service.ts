@@ -1,14 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { DrizzleService } from 'src/database/drizzle.service';
-import { streaksTable } from 'src/database/schemas/streaks';
-import { eq } from 'drizzle-orm';
+import { StreakService } from './streak.service';
 
 @Injectable()
 export class StreakSchedulerService {
   private readonly logger = new Logger(StreakSchedulerService.name);
 
-  constructor(private readonly drizzleService: DrizzleService) {}
+  constructor(private readonly streakService: StreakService) {}
 
   /**
    * Cron job that runs daily at 00:00 (midnight)
@@ -20,9 +18,7 @@ export class StreakSchedulerService {
 
     try {
       // Fetch all streaks
-      const allStreaks = await this.drizzleService.db
-        .select()
-        .from(streaksTable);
+      const allStreaks = await this.streakService.getActiveStreaks();
 
       // Get today's date at 00:00:00
       // for example if today is 2026-01-16 10:02:43, then today will be 2026-01-16 00:00:00
@@ -45,13 +41,7 @@ export class StreakSchedulerService {
         // Only reset if lastCompletionDate is 2+ days ago (streak is broken)
         // If it's 1 day ago (yesterday), user still has today to maintain their streak
         if (daysDifference >= 2 && streak.currentStreak > 0) {
-          await this.drizzleService.db
-            .update(streaksTable)
-            .set({
-              currentStreak: 0,
-              updatedAt: new Date(),
-            })
-            .where(eq(streaksTable.id, streak.id));
+          await this.streakService.resetStreak(streak.userId, streak.habitId);
 
           resetCount++;
           this.logger.debug(
