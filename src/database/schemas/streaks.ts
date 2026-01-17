@@ -15,6 +15,9 @@ export const streaksTable = pgTable('streaks', {
   longestStreak: integer('longest_streak').notNull().default(0),
   lastCompletionDate: timestamp('last_completion_date').notNull(),
   streakStartDate: timestamp('streak_start_date').notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });

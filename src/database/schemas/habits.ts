@@ -43,6 +43,9 @@ export const habitsTable = pgTable('habits', {
   // Array of reminder times in HH:MM format (e.g., ['08:00', '12:00', '18:00'])
   reminderTimes: text('reminder_times').array(),
   isActive: boolean('is_active').notNull().default(true),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
