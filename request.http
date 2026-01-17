@@ -14,7 +14,7 @@ POST http://localhost:3000/user/auth/signin
 Content-Type: application/json
 
 {
-    "email":"test2@example.com",
+    "email":"test@example.com",
     "password":"password"
 }
 
@@ -51,12 +51,12 @@ GET http://localhost:3000/habits
 ###
 
 # get habit by id
-GET http://localhost:3000/habits/24f3e7c9-a4ae-4566-9ea6-8834ef130761
+GET http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609
 
 ###
 
 # update habit
-PATCH http://localhost:3000/habits/24f3e7c9-a4ae-4566-9ea6-8834ef130761
+PATCH http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609
 Content-Type: application/json
 
 {
@@ -77,12 +77,12 @@ DELETE http://localhost:3000/habits/24f3e7c9-a4ae-4566-9ea6-8834ef130761
 ###
 
 # complete habit
-POST http://localhost:3000/habits/24f3e7c9-a4ae-4566-9ea6-8834ef130761/completed
+POST http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609/completed
 
 ###
 
 # get habit logs
-GET http://localhost:3000/habits/24f3e7c9-a4ae-4566-9ea6-8834ef130761/logs
+GET http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609/logs
 
 ###
 
@@ -102,5 +102,4 @@ GET http://localhost:3000/streak/all
 ###
 
 # get streak by habit id
-GET http://localhost:3000/streak/24f3e7c9-a4ae-4566-9ea6-8834ef130761
-
+GET http://localhost:3000/streak/130e2069-8342-4249-8975-635ade1c1609
