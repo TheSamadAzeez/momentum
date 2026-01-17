@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from 'src/database/drizzle.service';
 import { streaksTable } from 'src/database/schemas/streaks';
 import { and, eq } from 'drizzle-orm';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class StreakService {
-  constructor(private readonly drizzleService: DrizzleService) {}
+  constructor(
+    private readonly drizzleService: DrizzleService,
+    private readonly usersService: UsersService,
+  ) {}
 
   /**
    * Helper method to calculate the difference in days between two dates
@@ -23,6 +27,18 @@ export class StreakService {
     return Math.floor((d1.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24));
   }
 
+  async getUserStreak(userId: string) {
+    const user = await this.usersService.findOneById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return {
+      status: 'success',
+      message: 'User streak found',
+      data: user.data,
+    };
+  }
+
   async getHabitStreak(userId: string, habitId: string) {
     const streak = await this.drizzleService.db.query.streaksTable.findFirst({
       where: and(
@@ -32,7 +48,7 @@ export class StreakService {
     });
 
     if (!streak) {
-      return await this.createStreak(userId, habitId);
+      return { status: 'error', message: 'User has no streak', data: null };
     }
 
     return { status: 'success', message: 'Streak found', data: streak };
@@ -70,8 +86,8 @@ export class StreakService {
     await this.drizzleService.db.insert(streaksTable).values({
       userId,
       habitId,
-      currentStreak: 0,
-      longestStreak: 0,
+      currentStreak: 1,
+      longestStreak: 1,
       lastCompletionDate: new Date(),
       streakStartDate: new Date(),
     });
@@ -96,7 +112,8 @@ export class StreakService {
     const response = await this.getHabitStreak(userId, habitId);
 
     if (!response.data) {
-      throw new NotFoundException('Streak not found');
+      // throw new NotFoundException('Streak not found');
+      return await this.createStreak(userId, habitId);
     }
 
     const streakData = response.data;
