@@ -28,27 +28,31 @@ export class AuthService {
     const hashedPassword: string = await bcrypt.hash(password, 10);
 
     // Create the user with the hashed password
-    const newUser = await this.usersService.create(email, hashedPassword);
+    const result = await this.usersService.create(email, hashedPassword);
 
-    return newUser;
+    return result;
   }
 
   async signin(email: string, password: string) {
     // Find the user by email
     const user = await this.usersService.findOneByEmail(email);
 
-    if (!user) {
+    if (!user || !user.data) {
       throw new BadRequestException('Invalid email or password');
     }
 
     // Compare the provided password with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.data.password);
 
     if (!isPasswordValid) {
       throw new BadRequestException('Invalid email or password');
     }
 
-    return user;
+    return {
+      status: 'success',
+      message: 'User signed in successfully',
+      data: user.data,
+    };
   }
 
   signout(session: SessionData) {
@@ -56,5 +60,6 @@ export class AuthService {
       throw new BadRequestException('User not found');
     }
     delete session.userId;
+    return { status: 'success', message: 'User signed out successfully' };
   }
 }
