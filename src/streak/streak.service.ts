@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from 'src/database/drizzle.service';
 import { streaksTable } from 'src/database/schemas/streaks';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, gt } from 'drizzle-orm';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -163,13 +163,11 @@ export class StreakService {
       currentStreak: number;
       longestStreak: number;
       lastCompletionDate: Date;
-      updatedAt: Date;
       streakStartDate?: Date;
     } = {
       currentStreak: newCurrentStreak,
       longestStreak: newLongestStreak,
       lastCompletionDate: today,
-      updatedAt: new Date(),
     };
 
     // Update streak start date when starting fresh
@@ -210,5 +208,12 @@ export class StreakService {
       );
 
     return { message: 'Streak reset successfully' };
+  }
+
+  async getActiveStreaks() {
+    return await this.drizzleService.db
+      .select()
+      .from(streaksTable)
+      .where(gt(streaksTable.currentStreak, 0));
   }
 }
