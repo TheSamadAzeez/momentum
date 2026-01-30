@@ -1,23 +1,29 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 import { StreakService } from './streak.service';
+import { StreakResetJobData } from './streak.processor';
 
 @Injectable()
 export class StreakSchedulerService {
   private readonly logger = new Logger(StreakSchedulerService.name);
 
-  constructor(private readonly streakService: StreakService) {}
+  constructor(
+    private readonly streakService: StreakService,
+    @InjectQueue('streak') private readonly streakQueue: Queue,
+  ) {}
 
   /**
    * Cron job that runs daily at 00:00 (midnight)
-   * Resets streaks that have been broken (lastCompletionDate is 2+ days ago)
+   * Queues streaks that need to be checked for reset (lastCompletionDate is 2+ days ago)
    */
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async resetBrokenStreaks() {
     this.logger.log('Running daily streak reset job at midnight...');
 
     try {
-      // Fetch all streaks
+      // Fetch all active streaks where currentStreak > 0
       const allStreaks = await this.streakService.getActiveStreaks();
 
       // Get today's date at 00:00:00
@@ -25,9 +31,9 @@ export class StreakSchedulerService {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      let resetCount = 0;
+      let queuedCount = 0; // counter for the number of streaks queued for processing
 
-      // Check each streak
+      // Add each streak to the queue for processing
       for (const streak of allStreaks) {
         // Get last completion date at 00:00:00
         const lastCompletion = new Date(streak.lastCompletionDate);
@@ -38,20 +44,31 @@ export class StreakSchedulerService {
           (today.getTime() - lastCompletion.getTime()) / (1000 * 60 * 60 * 24),
         );
 
-        // Only reset if lastCompletionDate is 2+ days ago (streak is broken)
-        // If it's 1 day ago (yesterday), user still has today to maintain their streak
-        if (daysDifference >= 2 && streak.currentStreak > 0) {
-          await this.streakService.resetStreak(streak.userId, streak.habitId);
+        // Add to queue for processing
+        const jobData: StreakResetJobData = {
+          userId: streak.userId,
+          habitId: streak.habitId,
+          currentStreak: streak.currentStreak,
+          lastCompletionDate: streak.lastCompletionDate,
+          daysDifference,
+        };
 
-          resetCount++;
-          this.logger.debug(
-            `Reset streak for user ${streak.userId}, habit ${streak.habitId} (was ${streak.currentStreak}, last completion: ${daysDifference} days ago)`,
-          );
-        }
+        await this.streakQueue.add('reset-streak', jobData, {
+          attempts: 3, // Retry up to 3 times on failure
+          backoff: {
+            // backoff means that if the job fails, it will be retried after a delay
+            type: 'exponential', // exponential means that the delay will be doubled each time
+            delay: 2000, // Start with 2 second delay
+          },
+          removeOnComplete: true, // Clean up completed jobs
+          removeOnFail: false, // Keep failed jobs for debugging
+        });
+
+        queuedCount++;
       }
 
       this.logger.log(
-        `Streak reset job completed. Reset ${resetCount} out of ${allStreaks.length} streaks.`,
+        `Streak reset job completed. Queued ${queuedCount} streaks for processing.`,
       );
     } catch (error) {
       this.logger.error('Error running streak reset job:', error);
