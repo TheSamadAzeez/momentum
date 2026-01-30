@@ -7,7 +7,7 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class StreakService {
   constructor(
-    private readonly drizzleService: DrizzleService,
+    private readonly drizzleService: DrizzleService, // readonly means this property can only be set in the constructor and cannot be modified later, this is a best practice because it ensures that the property is not modified accidentally or intentionally
     private readonly usersService: UsersService,
   ) {}
 
