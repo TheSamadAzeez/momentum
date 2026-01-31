@@ -9,6 +9,9 @@ export interface StreakResetJobData {
   currentStreak: number;
   lastCompletionDate: Date;
   daysDifference: number;
+  frequencyType: 'daily' | 'interval' | 'custom';
+  intervalDays: number | null;
+  customDays: string[] | null;
 }
 
 @Processor('streak')
