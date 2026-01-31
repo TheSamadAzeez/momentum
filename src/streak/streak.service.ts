@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DrizzleService } from 'src/database/drizzle.service';
 import { streaksTable } from 'src/database/schemas/streaks';
+import { habitsTable } from 'src/database/schemas/habits';
 import { and, eq, gt } from 'drizzle-orm';
 import { UsersService } from 'src/users/users.service';
 
@@ -212,8 +213,17 @@ export class StreakService {
 
   async getActiveStreaks() {
     return await this.drizzleService.db
-      .select()
+      .select({
+        userId: streaksTable.userId,
+        habitId: streaksTable.habitId,
+        currentStreak: streaksTable.currentStreak,
+        lastCompletionDate: streaksTable.lastCompletionDate,
+        frequencyType: habitsTable.frequencyType,
+        intervalDays: habitsTable.intervalDays,
+        customDays: habitsTable.customDays,
+      })
       .from(streaksTable)
+      .innerJoin(habitsTable, eq(streaksTable.habitId, habitsTable.id)) // the innerJoin method is used to join the streaks table with the habits table by matching the habitId in the streaks table with the id in the habits table
       .where(gt(streaksTable.currentStreak, 0));
   }
 }
