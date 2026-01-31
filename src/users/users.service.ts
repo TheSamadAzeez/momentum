@@ -12,7 +12,11 @@ export class UsersService {
       .insert(usersTable)
       .values({ email, password })
       .returning();
-    return result[0];
+    return {
+      status: 'success',
+      message: 'User created successfully',
+      data: result[0],
+    };
   }
 
   async findOneById(id: string) {
@@ -22,22 +26,32 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return { status: 'success', message: 'User found', data: user };
   }
 
-  findOneByEmail(email: string) {
-    return this.drizzleService.db.query.usersTable.findFirst({
+  async findOneByEmail(email: string) {
+    const user = await this.drizzleService.db.query.usersTable.findFirst({
       where: eq(usersTable.email, email),
     });
+    if (!user) {
+      return null;
+    }
+    return { status: 'success', message: 'User found', data: user };
   }
 
-  findAll() {
-    return this.drizzleService.db.select().from(usersTable);
+  async findAll() {
+    const users = await this.drizzleService.db.select().from(usersTable);
+    return { status: 'success', message: 'Users found', data: users };
   }
 
-  delete(id: string) {
-    return this.drizzleService.db
+  async delete(id: string) {
+    const result = await this.drizzleService.db
       .delete(usersTable)
       .where(eq(usersTable.id, id));
+    return {
+      status: 'success',
+      message: 'User deleted successfully',
+      data: result,
+    };
   }
 }

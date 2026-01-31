@@ -51,12 +51,12 @@ GET http://localhost:3000/habits
 ###
 
 # get habit by id
-GET http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b
+GET http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609
 
 ###
 
 # update habit
-PATCH http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b
+PATCH http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609
 Content-Type: application/json
 
 {
@@ -72,19 +72,34 @@ Content-Type: application/json
 ###
 
 # delete habit
-DELETE http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b
+DELETE http://localhost:3000/habits/24f3e7c9-a4ae-4566-9ea6-8834ef130761
 
 ###
 
 # complete habit
-POST http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b/completed
+POST http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609/completed
 
 ###
 
 # get habit logs
-GET http://localhost:3000/habits/4f55e207-ea55-455c-84aa-a8e3f645f00b/logs
+GET http://localhost:3000/habits/130e2069-8342-4249-8975-635ade1c1609/logs
 
 ###
 
 # get analytics summary
-GET http://localhost:3000/analytics/summary
+# GET http://localhost:3000/analytics/summary
+
+###
+
+# get streak
+GET http://localhost:3000/streak
+
+###
+
+# get all streaks
+GET http://localhost:3000/streak/all
+
+###
+
+# get streak by habit id
+GET http://localhost:3000/streak/130e2069-8342-4249-8975-635ade1c1609

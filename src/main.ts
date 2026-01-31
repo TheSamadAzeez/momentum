@@ -11,7 +11,7 @@ async function bootstrap() {
     cookieSession({
       keys: ['momentum-secret-key'], // TODO: use environment variable
       // secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000, // 1 day TODO: change to 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     }),
   );
   app.useGlobalInterceptors(new SerializeInterceptor(UserDto));

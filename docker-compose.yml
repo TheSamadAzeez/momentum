@@ -25,9 +25,33 @@ services:
     networks:
       - postgres
 
+  redis:
+    container_name: momentum-redis
+    image: redis:7.4-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - postgres
+    command: redis-server --appendonly yes
+
+  redis-commander:
+    container_name: momentum-redis-commander
+    image: rediscommander/redis-commander:latest
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    networks:
+      - postgres
+    depends_on:
+      - redis
+
 volumes:
   postgres_data:
   pgadmin_data:
+  redis_data:
 
 networks:
   postgres:
