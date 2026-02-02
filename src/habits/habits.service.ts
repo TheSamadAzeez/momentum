@@ -81,8 +81,38 @@ export class HabitsService {
       completed: true,
     });
 
+    // Update analytics: increment completions, reset consecutive misses
+    const wasRecovering = habit.data.consecutiveMisses > 0;
+    await this.drizzleService.db
+      .update(habitsTable)
+      .set({
+        totalCompletions: habit.data.totalCompletions + 1,
+        consecutiveMisses: 0,
+        ...(wasRecovering && { lastRecoveryDate: new Date() }),
+      })
+      .where(and(eq(habitsTable.id, habitId), eq(habitsTable.userId, userId)));
+
     await this.streakService.updateStreak(userId, habitId);
     return { status: 'success', message: 'Habit marked as completed' };
+  }
+
+  async incrementMissedDay(habitId: string, userId: string) {
+    const habit = await this.getHabitById(habitId, userId);
+
+    if (!habit) {
+      throw new NotFoundException('Habit not found');
+    }
+
+    await this.drizzleService.db
+      .update(habitsTable)
+      .set({
+        totalMissedDays: habit.data.totalMissedDays + 1,
+        consecutiveMisses: habit.data.consecutiveMisses + 1,
+        lastMissedDate: new Date(),
+      })
+      .where(and(eq(habitsTable.id, habitId), eq(habitsTable.userId, userId)));
+
+    return { status: 'success', message: 'Missed day tracked' };
   }
 
   async getHabitLogs(habitId: string, userId: string) {

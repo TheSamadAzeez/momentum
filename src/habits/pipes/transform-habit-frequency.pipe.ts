@@ -6,6 +6,14 @@ import {
 } from '@nestjs/common';
 import { FrequencyType, createHabitDTO } from '../dtos/create-habit.dto';
 
+/**
+ * Pipe to transform and validate habit frequency data in createHabitDTO.
+ * Ensures that the fields align with the specified frequencyType.
+ * - For 'daily': sets intervalDays to 1 and removes customDays.
+ * - For 'interval': ensures intervalDays > 1 and removes customDays.
+ * - For 'custom': removes intervalDays and ensures customDays is provided.
+ * Throws BadRequestException for invalid configurations.
+ */
 @Injectable()
 export class TransformHabitFrequencyPipe implements PipeTransform {
   transform(value: createHabitDTO, metadata: ArgumentMetadata) {
