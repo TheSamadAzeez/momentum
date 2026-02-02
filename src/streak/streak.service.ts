@@ -165,10 +165,12 @@ export class StreakService {
       longestStreak: number;
       lastCompletionDate: Date;
       streakStartDate?: Date;
+      totalDaysTracked: number;
     } = {
       currentStreak: newCurrentStreak,
       longestStreak: newLongestStreak,
       lastCompletionDate: today,
+      totalDaysTracked: streakData.totalDaysTracked + 1,
     };
 
     // Update streak start date when starting fresh
@@ -199,10 +201,14 @@ export class StreakService {
 
   // reset streak to 0 if streak is broken
   async resetStreak(userId: string, habitId: string) {
+    const streak = await this.getHabitStreak(userId, habitId);
+
     await this.drizzleService.db
       .update(streaksTable)
       .set({
         currentStreak: 0,
+        totalResets: streak.data ? streak.data.totalResets + 1 : 1,
+        lastResetDate: new Date(),
       })
       .where(
         and(eq(streaksTable.userId, userId), eq(streaksTable.habitId, habitId)),
