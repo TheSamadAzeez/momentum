@@ -43,6 +43,12 @@ export const habitsTable = pgTable('habits', {
   // Array of reminder times in HH:MM format (e.g., ['08:00', '12:00', '18:00'])
   reminderTimes: text('reminder_times').array(),
   isActive: boolean('is_active').notNull().default(true),
+  // Analytics fields
+  totalCompletions: integer('total_completions').notNull().default(0),
+  totalMissedDays: integer('total_missed_days').notNull().default(0),
+  lastMissedDate: timestamp('last_missed_date'),
+  consecutiveMisses: integer('consecutive_misses').notNull().default(0),
+  lastRecoveryDate: timestamp('last_recovery_date'),
   updatedAt: timestamp('updated_at')
     .defaultNow()
     .notNull()
