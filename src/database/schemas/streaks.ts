@@ -15,6 +15,10 @@ export const streaksTable = pgTable('streaks', {
   longestStreak: integer('longest_streak').notNull().default(0),
   lastCompletionDate: timestamp('last_completion_date').notNull(),
   streakStartDate: timestamp('streak_start_date').notNull(),
+  // Analytics fields
+  totalResets: integer('total_resets').notNull().default(0),
+  lastResetDate: timestamp('last_reset_date'),
+  totalDaysTracked: integer('total_days_tracked').notNull().default(0),
   updatedAt: timestamp('updated_at')
     .defaultNow()
     .notNull()
